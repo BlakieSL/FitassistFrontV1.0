@@ -23,15 +23,16 @@ const getUserRole = () => {
     return payload.authorities || [];
 };
 
-const verifyResponse =  (response) => {
+const verifyResponse = (response) => {
     if (response.status === 401) {
         window.location.href = '/login';
     }
-    if (response.status !== 200) {
+    if (response.status < 200 || response.status >= 300) {
         throw new Error('Network response was not okay');
     }
     return response;
 };
+
 
 export const UserContext = createContext({
     currentUser: null,
@@ -48,7 +49,6 @@ export const UserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     const fetchCurrentUser = () => {
-
             const token = verifyToken();
             axios.get(`http://localhost:8000/api/users/${getUserId()}`, {
                 headers: {
@@ -64,7 +64,8 @@ export const UserProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        if (!currentUser) {
+        const token = getToken();
+        if (token && !currentUser) {
             fetchCurrentUser();
         }
     }, [currentUser]);

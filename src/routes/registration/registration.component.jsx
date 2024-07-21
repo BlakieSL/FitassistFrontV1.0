@@ -1,7 +1,7 @@
+import React, { useContext, useState } from 'react';
 import TextInput from '../../components/textInput/textInput.component';
 import SelectInput from '../../components/selectInput/selectInput.component';
-import { useState } from "react";
-import axios from "axios";
+import { ApiContext } from "../../contexts/api.context";
 
 const genderOptions = [
     { value: 'male', label: 'Male' },
@@ -33,18 +33,15 @@ const RegisterForm = () => {
     const [weight, setWeight] = useState('');
     const [activityLevel, setActivityLevel] = useState('');
     const [goal, setGoal] = useState('');
-    const [error, setError] = useState('');
+
+    const { register } = useContext(ApiContext);
 
     const handleRegister = async (event) => {
         event.preventDefault();
-        setError('');
         try {
-            await axios.post('http://localhost:8000/api/users/register', {
-                name, surname, email, password, gender, birthday, height, weight, activityLevel, goal
-            });
-            window.location.href = '/login';
-        } catch (err) {
-            setError('Registration failed: ' + (err.response?.data?.message || 'Please check your details and try again.'));
+            await register({name, surname, email, password, gender, birthday, height, weight, activityLevel, goal});
+        } catch (error) {
+            console.log('Error during registration:', error);
         }
     };
 
@@ -154,7 +151,6 @@ const RegisterForm = () => {
                 />
                 <button type="submit" className="btn btn-primary">Register</button>
             </form>
-            {error && <p id="registerError">{error}</p>}
         </main>
     );
 };
