@@ -8,11 +8,22 @@ export const ApiContext = createContext({
     addToCart: () => null,
     register: () => null,
     login: () => null,
-    fetchFoodById: () => null
+    fetchFoodById: () => null,
+    fetchActivities: () => null,
+    fetchActivityById: () => null,
+    calculateCaloriesBurned: () => null,
+    addToDailyActivities: () => null
 });
 
 export const ApiProvider = ({ children }) => {
     const { verifyToken, verifyResponse, getUserId, fetchCurrentUser } = useContext(UserContext);
+
+    const getRequestOptions = (token) => ({
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
 
     const register = async (userData) => {
         const response = await axios.post('http://localhost:8000/api/users/register', userData, {
@@ -38,35 +49,34 @@ export const ApiProvider = ({ children }) => {
 
     const fetchFoods = async () => {
         const token = verifyToken();
-        const response = await axios.get('http://localhost:8000/api/foods', {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+
+        const url = 'http://localhost:8000/api/foods';
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.get(url, requestOptions);
         verifyResponse(response);
         return response.data;
     };
 
     const fetchFoodById = async (foodId) => {
         const token = verifyToken();
-        const response = await axios.get(`http://localhost:8000/api/foods/${foodId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
+
+        const url = `http://localhost:8000/api/foods/${foodId}`;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.get(url, requestOptions);
         verifyResponse(response);
         return response.data;
     };
 
     const calculateMacros = async (foodId, amount) => {
         const token = verifyToken();
-        const response = await axios.post(`http://localhost:8000/api/foods/${foodId}/calculate-macros`, { amount: parseInt(amount) }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
+
+        const url = `http://localhost:8000/api/foods/${foodId}/calculate-macros`;
+        const payload = { amount: parseInt(amount) };
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.post(url, payload, requestOptions);
         verifyResponse(response);
         return response.data;
     };
@@ -74,15 +84,62 @@ export const ApiProvider = ({ children }) => {
     const addToCart = async (foodId, amount) => {
         const token = verifyToken();
         const userId = getUserId();
-        const response = await axios.post(`http://localhost:8000/api/cart/${userId}/add`, { id: foodId, amount: parseInt(amount) }, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
+
+        const url = `http://localhost:8000/api/cart/${userId}/add`;
+        const payload = { id: foodId, amount: parseInt(amount) }
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.post(url, payload, requestOptions);
         verifyResponse(response);
         return response.data;
     };
+
+    const fetchActivities = async () => {
+        const token = verifyToken();
+
+        const url = 'http://localhost:8000/api/activities';
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.get(url, requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchActivityById = async (activityId) => {
+        const token = verifyToken();
+
+        const url =  `http://localhost:8000/api/activities/${activityId}`;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.get(url,requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const calculateCaloriesBurned = async (activityId, time) => {
+        const token = verifyToken();
+
+        const url = `http://localhost:8000/api/activities/${activityId}/calculate-calories`
+        const payload = {userId: getUserId(), time: parseInt(time) };
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.post(url, payload, requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const addToDailyActivities = async (activityId, time) => {
+        const token = verifyToken();
+        const userId = getUserId();
+
+        const url = `http://localhost:8000/api/daily-activities/${userId}/add`;
+        const payload = {id: activityId, time: parseInt(time) };
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.post(url, payload, requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
 
 
     const value = {
@@ -91,7 +148,11 @@ export const ApiProvider = ({ children }) => {
         addToCart,
         register,
         login,
-        fetchFoodById
+        fetchFoodById,
+        fetchActivities,
+        fetchActivityById,
+        calculateCaloriesBurned,
+        addToDailyActivities
     };
 
     return (

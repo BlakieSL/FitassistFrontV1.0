@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import FoodDetails from '../../components/foodCard/foodDetailsCard.component';
 import { ApiContext } from '../../contexts/api.context';
 
-const FoodDetailsPage = () => {
+const Food = () => {
     const { id } = useParams();
     const [food, setFood] = useState(null);
     const { fetchFoodById } = useContext(ApiContext);
@@ -14,10 +14,9 @@ const FoodDetailsPage = () => {
                 const foodData = await fetchFoodById(id);
                 setFood(foodData);
             } catch (error) {
-                console.error('Error fetching food details:', error);
+                console.error('Error fetching food:', error);
             }
         };
-
         fetchFood();
     }, [id, fetchFoodById]);
 
@@ -28,4 +27,4 @@ const FoodDetailsPage = () => {
     return <FoodDetails food={food} />;
 };
 
-export default FoodDetailsPage;
+export default Food;

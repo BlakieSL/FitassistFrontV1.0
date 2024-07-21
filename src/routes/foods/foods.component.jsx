@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import FoodList from '../../components/foodList/foodListComponent';
+import FoodList from '../../components/foodList/foodList.component';
 import { ApiContext } from '../../contexts/api.context';
 
 const Foods = () => {
@@ -9,14 +9,14 @@ const Foods = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const foodData = await fetchFoods();
-                setFoods(foodData);
+                const foodsData = await fetchFoods();
+                setFoods(foodsData);
             } catch (error) {
                 console.error('Error fetching foods:', error);
             }
         };
-
         fetchData();
+
     }, [fetchFoods]);
 
     return (
