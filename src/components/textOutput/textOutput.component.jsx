@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TextOutput = ({ iconClass, id, value }) => (
     <div>
         <i className={iconClass}></i>

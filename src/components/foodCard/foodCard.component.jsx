@@ -1,8 +1,14 @@
+import TextOutput from "../textOutput/textOutput.component";
+import TextOutputTitle from "../textOutputTitle/textOutputTitle.component";
 const FoodCard = ({ name, calories }) => {
     return (
         <div>
-            <h2>{name}</h2>
-            <p>Calories: {calories}</p>
+            <TextOutputTitle id="foodCardTitle" value={name}/>
+            <TextOutput
+                iconClass="fas fa-fire"
+                id="foodCalories"
+                value={`Calories: ${calories}`}
+            />
         </div>
     );
 };

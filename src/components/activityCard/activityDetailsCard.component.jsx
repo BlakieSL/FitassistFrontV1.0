@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { ApiContext } from "../../contexts/api.context";
 import TextOutput from "../textOutput/textOutput.component";
 import TextInput from "../textInput/textInput.component";
-
+import TextOutputTitle from "../textOutputTitle/textOutputTitle.component";
 const ActivityDetails = ({ activity }) => {
     const [time, setTime] = useState('');
     const [caloriesBurned, setCaloriesBurned] = useState(null);
@@ -46,7 +46,7 @@ const ActivityDetails = ({ activity }) => {
 
     return (
         <div>
-            <h1 id="activityName">{activity.name}</h1>
+            <TextOutputTitle id="activityName" value={activity.name} />
             <TextOutput
                 iconClass="fas fa-bolt"
                 id="activityMet"

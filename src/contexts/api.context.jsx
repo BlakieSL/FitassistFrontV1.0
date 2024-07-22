@@ -12,7 +12,9 @@ export const ApiContext = createContext({
     fetchActivities: () => null,
     fetchActivityById: () => null,
     calculateCaloriesBurned: () => null,
-    addToDailyActivities: () => null
+    addToDailyActivities: () => null,
+    fetchCartFoods: () => null,
+    fetchDailyActivities: () => null
 });
 
 export const ApiProvider = ({ children }) => {
@@ -141,6 +143,31 @@ export const ApiProvider = ({ children }) => {
         return response.data;
     }
 
+    const fetchCartFoods = async() => {
+        const token = verifyToken();
+        const userId = getUserId();
+
+        const url = `http://localhost:8000/api/cart/${userId}`;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.get(url, requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchDailyActivities = async() => {
+        const token = verifyToken();
+        const userId = getUserId();
+
+        const url = `http://localhost:8000/api/daily-activities/${userId}`
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.get(url,requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
+
+
 
     const value = {
         fetchFoods,
@@ -152,7 +179,9 @@ export const ApiProvider = ({ children }) => {
         fetchActivities,
         fetchActivityById,
         calculateCaloriesBurned,
-        addToDailyActivities
+        addToDailyActivities,
+        fetchCartFoods,
+        fetchDailyActivities
     };
 
     return (
