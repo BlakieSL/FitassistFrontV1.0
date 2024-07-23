@@ -14,11 +14,15 @@ export const ApiContext = createContext({
     calculateCaloriesBurned: () => null,
     addToDailyActivities: () => null,
     fetchCartFoods: () => null,
-    fetchDailyActivities: () => null
+    fetchDailyActivities: () => null,
+    updateUser: () => null,
+    deleteUser: () => null,
+    fetchCategories: () => null,
+    fetchActivitiesByCategory: () => null
 });
 
 export const ApiProvider = ({ children }) => {
-    const { verifyToken, verifyResponse, getUserId, fetchCurrentUser } = useContext(UserContext);
+    const { verifyToken, verifyResponse, fetchCurrentUser, logout, currentUser } = useContext(UserContext);
 
     const getRequestOptions = (token) => ({
         headers: {
@@ -85,15 +89,14 @@ export const ApiProvider = ({ children }) => {
 
     const addToCart = async (foodId, amount) => {
         const token = verifyToken();
-        const userId = getUserId();
 
-        const url = `http://localhost:8000/api/cart/${userId}/add`;
+        const url = `http://localhost:8000/api/cart/${currentUser.id}/add`;
         const payload = { id: foodId, amount: parseInt(amount) }
         const requestOptions = getRequestOptions(token);
 
         const response = await axios.post(url, payload, requestOptions);
         verifyResponse(response);
-        return response.data;
+        alert('Food added successfully');
     };
 
     const fetchActivities = async () => {
@@ -122,7 +125,7 @@ export const ApiProvider = ({ children }) => {
         const token = verifyToken();
 
         const url = `http://localhost:8000/api/activities/${activityId}/calculate-calories`
-        const payload = {userId: getUserId(), time: parseInt(time) };
+        const payload = {userId: currentUser.id, time: parseInt(time) };
         const requestOptions = getRequestOptions(token);
 
         const response = await axios.post(url, payload, requestOptions);
@@ -132,22 +135,20 @@ export const ApiProvider = ({ children }) => {
 
     const addToDailyActivities = async (activityId, time) => {
         const token = verifyToken();
-        const userId = getUserId();
 
-        const url = `http://localhost:8000/api/daily-activities/${userId}/add`;
+        const url = `http://localhost:8000/api/daily-activities/${currentUser.id}/add`;
         const payload = {id: activityId, time: parseInt(time) };
         const requestOptions = getRequestOptions(token);
 
         const response = await axios.post(url, payload, requestOptions);
         verifyResponse(response);
-        return response.data;
+        alert('Activity added successfully');
     }
 
     const fetchCartFoods = async() => {
         const token = verifyToken();
-        const userId = getUserId();
 
-        const url = `http://localhost:8000/api/cart/${userId}`;
+        const url = `http://localhost:8000/api/cart/${currentUser.id}`;
         const requestOptions = getRequestOptions(token);
 
         const response = await axios.get(url, requestOptions);
@@ -157,9 +158,8 @@ export const ApiProvider = ({ children }) => {
 
     const fetchDailyActivities = async() => {
         const token = verifyToken();
-        const userId = getUserId();
 
-        const url = `http://localhost:8000/api/daily-activities/${userId}`
+        const url = `http://localhost:8000/api/daily-activities/${currentUser.id}`
         const requestOptions = getRequestOptions(token);
 
         const response = await axios.get(url,requestOptions);
@@ -167,7 +167,51 @@ export const ApiProvider = ({ children }) => {
         return response.data;
     }
 
+    const updateUser = async(userData) => {
+        const token = verifyToken();
 
+        const url = `http://localhost:8000/api/users/${currentUser.id}`;
+        const payload = userData;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.patch(url, payload,requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const deleteUser = async() => {
+        const token = verifyToken();
+
+        const url = `http://localhost:8000/api/users/${currentUser.id}`;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.delete(url,requestOptions);
+        verifyResponse(response);
+        alert('User deleted successfully');
+        logout();
+    }
+
+    const fetchCategories = async() => {
+        const token = verifyToken();
+
+        const url = 'http://localhost:8000/api/activity-categories';
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.get(url, requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchActivitiesByCategory = async(categoryId) => {
+        const token = verifyToken();
+
+        const url = `http://localhost:8000/api/activity-categories/${categoryId}/activities`;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.get(url, requestOptions);
+        verifyResponse(response);
+        return response.data;
+    }
 
     const value = {
         fetchFoods,
@@ -181,7 +225,11 @@ export const ApiProvider = ({ children }) => {
         calculateCaloriesBurned,
         addToDailyActivities,
         fetchCartFoods,
-        fetchDailyActivities
+        fetchDailyActivities,
+        updateUser,
+        deleteUser,
+        fetchCategories,
+        fetchActivitiesByCategory
     };
 
     return (

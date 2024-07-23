@@ -8,7 +8,7 @@ import Foods from './routes/foods/foods.component';
 import Activities from './routes/activities/activities.component';
 import Activity from './routes/activity/activity.component';
 import Cart from './routes/cart/cart.component';
-
+import User from './routes/user/user.component';
 const App = () => {
   return (
       <Router>
@@ -21,7 +21,7 @@ const App = () => {
             <Route path='activities' element={<Activities />} />
             <Route path='activity/:id' element={<Activity />} />
             <Route path='cart' element={<Cart />} />
-
+            <Route path='userInfo' element={<User />} />
           </Route>
         </Routes>
       </Router>

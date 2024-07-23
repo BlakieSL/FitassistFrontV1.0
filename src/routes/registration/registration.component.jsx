@@ -2,25 +2,8 @@ import React, { useContext, useState } from 'react';
 import TextInput from '../../components/textInput/textInput.component';
 import SelectInput from '../../components/selectInput/selectInput.component';
 import { ApiContext } from "../../contexts/api.context";
+import { genderOptions, activityLevelOptions, goalOptions} from "../../helper/options";
 
-const genderOptions = [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' }
-];
-
-const activityLevelOptions = [
-    { value: 'sedentary', label: 'sedentary' },
-    { value: 'lightly_active', label: 'lightly active' },
-    { value: 'moderately_active', label: 'moderately active' },
-    { value: 'very_active', label: 'very active' },
-    { value: 'super_active', label: 'super active' }
-];
-
-const goalOptions = [
-    { value: 'maintain', label: 'maintain weight' },
-    { value: 'lose', label: 'lose weight' },
-    { value: 'build', label: 'build muscle' }
-];
 
 const RegisterForm = () => {
     const [name, setName] = useState('');

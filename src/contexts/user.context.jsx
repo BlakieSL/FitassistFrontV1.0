@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import {jwtDecode} from "jwt-decode";
+import jwt_decode, {jwtDecode} from 'jwt-decode';
+
 
 // Utility functions
 const getToken = () => localStorage.getItem('jwt');
@@ -33,6 +34,11 @@ const verifyResponse = (response) => {
     return response;
 };
 
+const logout = () => {
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('currentUser');
+    window.location.href = '/login';
+}
 
 export const UserContext = createContext({
     currentUser: null,
@@ -43,22 +49,28 @@ export const UserContext = createContext({
     getUserRole: () => null,
     verifyResponse: () => null,
     fetchCurrentUser: () => null,
+    logout: () => null
 });
 
 export const UserProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(null);
+    const [currentUser, setCurrentUser] = useState(() => {
+        const savedUser = localStorage.getItem('currentUser');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
 
     const fetchCurrentUser = () => {
-            const token = verifyToken();
-            axios.get(`http://localhost:8000/api/users/${getUserId()}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+        const token = verifyToken();
+        axios.get(`http://localhost:8000/api/users/${getUserId()}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                const user = response.data;
+                setCurrentUser(user);
+                localStorage.setItem('currentUser', JSON.stringify(user));
             })
-            .then( response=> {
-                setCurrentUser(response.data);
-            })
-             .catch (error => {
+            .catch(error => {
                 console.error('Error fetching current user:', error);
             });
     };
@@ -79,6 +91,7 @@ export const UserProvider = ({ children }) => {
         getUserRole,
         verifyResponse,
         fetchCurrentUser,
+        logout
     };
 
     return (
