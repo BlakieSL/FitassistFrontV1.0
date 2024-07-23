@@ -1,6 +1,6 @@
-import React, { createContext, useContext } from 'react';
+import React, {createContext, useContext} from 'react';
 import axios from 'axios';
-import { UserContext } from './user.context';
+import {UserContext} from './user.context';
 
 export const ApiContext = createContext({
     fetchFoods: () => null,
@@ -18,7 +18,8 @@ export const ApiContext = createContext({
     updateUser: () => null,
     deleteUser: () => null,
     fetchCategories: () => null,
-    fetchActivitiesByCategory: () => null
+    fetchActivitiesByCategory: () => null,
+    searchAll: () => null
 });
 
 export const ApiProvider = ({ children }) => {
@@ -213,6 +214,33 @@ export const ApiProvider = ({ children }) => {
         return response.data;
     }
 
+    const searchAll = async (query, type) => {
+        const token = verifyToken();
+        const urlMap = {
+            foods: 'http://localhost:8000/api/foods/search',
+            activities: 'http://localhost:8000/api/activities/search',
+            exercises: 'http://localhost:8000/api/exercises/search'
+        };
+
+        if (!urlMap[type]) {
+            throw new Error('Invalid search type');
+        }
+
+        try {
+            const response = await axios.post(
+                urlMap[type],
+                { name: query },
+                getRequestOptions(token)
+            );
+            verifyResponse(response);
+            return response.data;
+        } catch (error) {
+            console.error(`Error searching ${type}`, error);
+            throw error;
+        }
+    };
+
+
     const value = {
         fetchFoods,
         calculateMacros,
@@ -229,7 +257,8 @@ export const ApiProvider = ({ children }) => {
         updateUser,
         deleteUser,
         fetchCategories,
-        fetchActivitiesByCategory
+        fetchActivitiesByCategory,
+        searchAll
     };
 
     return (

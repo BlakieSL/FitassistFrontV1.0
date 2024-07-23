@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import Navigation from './routes/navigation/navigation.component';
 import Login from './routes/login/login.component';
 import Registration from './routes/registration/registration.component';
@@ -9,6 +8,8 @@ import Activities from './routes/activities/activities.component';
 import Activity from './routes/activity/activity.component';
 import Cart from './routes/cart/cart.component';
 import User from './routes/user/user.component';
+import SearchResults from "./routes/searchResults/searchResults.component";
+
 const App = () => {
   return (
       <Router>
@@ -22,6 +23,7 @@ const App = () => {
             <Route path='activity/:id' element={<Activity />} />
             <Route path='cart' element={<Cart />} />
             <Route path='userInfo' element={<User />} />
+            <Route path='searchResults' element={<SearchResults />} />
           </Route>
         </Routes>
       </Router>
