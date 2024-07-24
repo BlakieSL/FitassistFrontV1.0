@@ -30,6 +30,10 @@ const SearchForm = () => {
         navigate(`/searchResults?query=${query}&type=${category}`);
     };
 
+    const handleSuggestionClick = (id) => {
+        navigate(`/${category.slice(0, -1)}/${id}`);
+    };
+
     return (
         <form id="searchForm" className="search-form" autoComplete="off" onSubmit={handleSubmit}>
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -52,7 +56,12 @@ const SearchForm = () => {
             {suggestions.length > 0 && (
                 <ul className="suggestions-list">
                     {suggestions.map((item, index) => (
-                        <li key={index} className="suggestion-item">
+                        <li
+                            key={index}
+                            className="suggestion-item"
+                            onClick={() => handleSuggestionClick(item.id)}
+                            style={{ cursor: 'pointer' }}
+                        >
                             {item.name}
                         </li>
                     ))}
