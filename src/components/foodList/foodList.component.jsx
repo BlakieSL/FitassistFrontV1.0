@@ -1,13 +1,25 @@
 import FoodCard from '../foodCard/foodCard.component';
+import {useNavigate} from "react-router-dom";
 
 const FoodList = ({ foods }) => {
+    const navigate = useNavigate();
+
+    const handleFoodClick = (foodId) => {
+        navigate(`/food/${foodId}`);
+    }
+
     return (
         <div>
             {foods.length > 0 ? (
                 foods.map(food => (
-                    <a href={`/food/${food.id}`} className="food-link" key={food.id}>
+                    <div
+                        key={food.id}
+                        className="food-link"
+                        onClick={() => handleFoodClick(food.id)}
+                        style={{ cursor: 'pointer'}}
+                    >
                         <FoodCard name={food.name} calories={food.calories} />
-                    </a>
+                    </div>
                 ))
             ) : (
                 <p>No results found</p>

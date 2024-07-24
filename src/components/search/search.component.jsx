@@ -8,6 +8,11 @@ const SearchForm = () => {
     const [suggestions, setSuggestions] = useState([]);
     const { searchAll } = useContext(ApiContext);
     const navigate = useNavigate();
+    const categoryMap = {
+        foods: 'food',
+        activities: 'activity',
+        exercises: 'exercise',
+    };
 
     const handleInputChange = async (e) => {
         const newQuery = e.target.value;
@@ -31,7 +36,8 @@ const SearchForm = () => {
     };
 
     const handleSuggestionClick = (id) => {
-        navigate(`/${category.slice(0, -1)}/${id}`);
+        const singularCategory = categoryMap[category];
+        navigate(`/${singularCategory}/${id}`);
     };
 
     return (

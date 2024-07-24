@@ -1,13 +1,26 @@
-import ActivityCard from "../activityCard/activityCard.component";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import ActivityCard from '../activityCard/activityCard.component';
 
 const ActivityList = ({ activities }) => {
+    const navigate = useNavigate();
+
+    const handleActivityClick = (activityId) => {
+        navigate(`/activity/${activityId}`);
+    };
+
     return (
         <div>
-            {activities.length > 0? (
+            {activities.length > 0 ? (
                 activities.map(activity => (
-                    <a href={`/activity/${activity.id}`} className="activity-link" key={activity.id}>
+                    <div
+                        key={activity.id}
+                        className="activity-link"
+                        onClick={() => handleActivityClick(activity.id)}
+                        style={{ cursor: 'pointer' }}
+                    >
                         <ActivityCard name={activity.name} met={activity.met} />
-                    </a>
+                    </div>
                 ))
             ) : (
                 <p>No results found</p>

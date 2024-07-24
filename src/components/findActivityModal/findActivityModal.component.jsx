@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import ModalComponent from '../modalComponent/modal.component';
 import { ApiContext } from "../../contexts/api.context";
+import {Navigate, useNavigate} from "react-router-dom";
 
 const FindActivityModal = ({ show, handleClose }) => {
+    const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
     const [activities, setActivities] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -31,8 +33,9 @@ const FindActivityModal = ({ show, handleClose }) => {
     };
 
     const handleSubmit = () => {
-        if (selectedActivity) {
-            window.location.href = `/activity/${selectedActivity}`;
+        if (selectedActivity){
+            handleClose();
+            navigate(`/activity/${selectedActivity}`);
         }
     };
 

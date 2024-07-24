@@ -1,16 +1,28 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import TextOutput from "../textOutput/textOutput.component";
 import TextOutputTitle from "../textOutputTitle/textOutputTitle.component";
+
 const CartActivities = ({ activities, editMode, handleUpdate, handleDelete }) => {
+    const navigate = useNavigate();
+
+    const handleActivityClick = (activityId) => {
+        navigate(`/activity/${activityId}`);
+    };
+
     return (
         <div id="cartActivityList">
             <h2>Activities</h2>
             {activities.length > 0 ? (
                 activities.map(activity => (
                     <div key={activity.id} className="activity-container">
-                        <a href={`/activity/${activity.id}`} className="activity-link" key={activity.id}>
+                        <div
+                            onClick={() => handleActivityClick(activity.id)}
+                            className="activity-link"
+                            style={{ cursor: 'pointer' }}
+                        >
                             <div className="activity-item">
-                                <TextOutputTitle id="title" value={activity.name}/>
+                                <TextOutputTitle id="title" value={activity.name} />
                                 <TextOutput
                                     iconClass="fas fa-fire"
                                     id="activityCaloriesBurned"
@@ -22,7 +34,7 @@ const CartActivities = ({ activities, editMode, handleUpdate, handleDelete }) =>
                                     value={`Time: ${activity.time}`}
                                 />
                             </div>
-                        </a>
+                        </div>
                         {editMode && (
                             <div className="edit-buttons">
                                 <button onClick={() => handleUpdate(activity)}>
