@@ -19,7 +19,11 @@ export const ApiContext = createContext({
     deleteUser: () => null,
     fetchCategories: () => null,
     fetchActivitiesByCategory: () => null,
-    searchAll: () => null
+    searchAll: () => null,
+    deleteFoodFromCart: () => null,
+    deleteActivityFromCart: () => null,
+    modifyCartFood: () => null,
+    modifyCartActivity: () => null
 });
 
 export const ApiProvider = ({ children }) => {
@@ -240,6 +244,49 @@ export const ApiProvider = ({ children }) => {
         }
     };
 
+    const deleteFoodFromCart = async(foodId) => {
+        const token = verifyToken();
+
+        const url = `http://localhost:8000/api/cart/${currentUser.id}/remove/${foodId}`;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.delete(url, requestOptions);
+        verifyResponse(response);
+        alert("food was successfully removed from cart");
+    }
+
+    const deleteActivityFromCart = async(activityId) => {
+        const token = verifyToken();
+
+        const url = `http://localhost:8000/api/daily-activities/${currentUser.id}/remove/${activityId}`;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.delete(url, requestOptions);
+        verifyResponse(response);
+        alert("activity was successfully removed from cart");
+    }
+
+    const modifyCartFood = async(foodId, patch) => {
+        const token = verifyToken();
+
+        const url = `http://localhost:8000/api/cart/${currentUser.id}/modify-food/${foodId}`;
+        const payload =  patch ;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.patch(url, payload, requestOptions);
+        verifyResponse(response);
+    }
+
+    const modifyCartActivity = async(activityId, patch) => {
+        const token = verifyToken();
+
+        const url = `http://localhost:8000/api/daily-activities/${currentUser.id}/modify-activity/${activityId}`;
+        const payload =  patch ;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.patch(url, payload, requestOptions);
+        verifyResponse(response);
+    }
 
     const value = {
         fetchFoods,
@@ -258,7 +305,11 @@ export const ApiProvider = ({ children }) => {
         deleteUser,
         fetchCategories,
         fetchActivitiesByCategory,
-        searchAll
+        searchAll,
+        deleteFoodFromCart,
+        deleteActivityFromCart,
+        modifyCartFood,
+        modifyCartActivity
     };
 
     return (

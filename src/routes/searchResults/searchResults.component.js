@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ApiContext } from '../../contexts/api.context';
+import FoodList from "../../components/foodList/foodList.component";
+import ActivityList from "../../components/activityList/activityList.component";
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
@@ -22,7 +24,6 @@ const SearchResults = () => {
             try {
                 const data = await searchAll(searchQuery, type);
                 setResults(data);
-                console.log(results)
             } catch (err) {
                 setError('Error fetching search results');
             } finally {
@@ -47,24 +48,10 @@ const SearchResults = () => {
         <div>
             <h1>Search Results for "{searchQuery}"</h1>
             {type === 'foods' && results.length > 0 && (
-                <div>
-                    <h2>Foods</h2>
-                    <ul>
-                        {results.map(food => (
-                            <li key={food.id}>{food.name}</li>
-                        ))}
-                    </ul>
-                </div>
+                <FoodList foods={results} />
             )}
             {type === 'activities' && results.length > 0 && (
-                <div>
-                    <h2>Activities</h2>
-                    <ul>
-                        {results.map(activity => (
-                            <li key={activity.id}>{activity.name}</li>
-                        ))}
-                    </ul>
-                </div>
+                 <ActivityList activities={results} />
             )}
             {type === 'exercises' && results.length > 0 && (
                 <div>

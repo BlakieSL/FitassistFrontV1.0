@@ -8,14 +8,12 @@ import UserUpdateModal from '../../components/userUpdateModal/userUpdateModal.co
 const User = () => {
     const { currentUser, logout, fetchCurrentUser } = useContext(UserContext);
     const { deleteUser, updateUser } = useContext(ApiContext);
-    const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleDelete = async () => {
         try {
             await deleteUser();
         } catch (error) {
-            setError('Error deleting user');
             console.error('Error deleting user:', error);
         }
     };
@@ -26,7 +24,6 @@ const User = () => {
             await fetchCurrentUser();
             setIsModalOpen(false);
         } catch (error) {
-            setError('Error updating user');
             console.error('Error updating user:', error);
         }
     };
