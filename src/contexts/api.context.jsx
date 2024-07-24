@@ -23,7 +23,9 @@ export const ApiContext = createContext({
     deleteFoodFromCart: () => null,
     deleteActivityFromCart: () => null,
     modifyCartFood: () => null,
-    modifyCartActivity: () => null
+    modifyCartActivity: () => null,
+    addFood: () => null,
+    addActivity: () => null,
 });
 
 export const ApiProvider = ({ children }) => {
@@ -288,6 +290,30 @@ export const ApiProvider = ({ children }) => {
         verifyResponse(response);
     }
 
+    const addFood = async(foodData) => {
+        const token = verifyToken();
+
+        const url = 'http://localhost:8000/api/foods';
+        const payload = foodData;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.post(url, payload, requestOptions);
+        verifyResponse(response);
+        alert('food added successfully');
+    }
+
+    const addActivity = async(activityData) => {
+        const token = verifyToken();
+
+        const url = 'http://localhost:8000/api/activities';
+        const payload = activityData;
+        const requestOptions = getRequestOptions(token);
+
+        const response = await axios.post(url, payload, requestOptions);
+        verifyResponse(response);
+        alert('activity added successfully');
+    }
+
     const value = {
         fetchFoods,
         calculateMacros,
@@ -309,7 +335,9 @@ export const ApiProvider = ({ children }) => {
         deleteFoodFromCart,
         deleteActivityFromCart,
         modifyCartFood,
-        modifyCartActivity
+        modifyCartActivity,
+        addFood,
+        addActivity
     };
 
     return (

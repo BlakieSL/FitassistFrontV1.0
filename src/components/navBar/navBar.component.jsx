@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchForm from '../search/search.component';
 import NavItem from '../navItem/navItem.component';
 import FindActivityModal from '../findActivityModal/findActivityModal.component';
+import AddFoodModal from '../addFoodModal/addFoodModal.component';
+import AddActivityModal from '../addActivityModal/addActivityModal.component';
+import { UserContext } from '../../contexts/user.context';
 
 const Navbar = () => {
     const navigate = useNavigate();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { currentUser, getUserRole } = useContext(UserContext);
+    const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
+    const [isAddFoodModalOpen, setIsAddFoodModalOpen] = useState(false);
+    const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState(false);
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+    const openActivityModal = () => setIsActivityModalOpen(true);
+    const closeActivityModal = () => setIsActivityModalOpen(false);
+
+    const openAddFoodModal = () => setIsAddFoodModalOpen(true);
+    const closeAddFoodModal = () => setIsAddFoodModalOpen(false);
+
+    const openAddActivityModal = () => setIsAddActivityModalOpen(true);
+    const closeAddActivityModal = () => setIsAddActivityModalOpen(false);
 
     const handleNavigation = (path) => {
         navigate(path);
     };
+
+    const isAdmin = getUserRole().includes('ROLE_ADMIN');
 
     return (
         <header>
@@ -26,7 +40,7 @@ const Navbar = () => {
                         to="#"
                         iconClass="fas fa-calculator"
                         id="openCalculatorModal"
-                        onClick={openModal}
+                        onClick={openActivityModal}
                     />
                     <NavItem
                         to="#"
@@ -48,9 +62,25 @@ const Navbar = () => {
                         iconClass="fas fa-user"
                         onClick={() => handleNavigation('/userInfo')}
                     />
+                    {isAdmin && (
+                        <>
+                            <NavItem
+                                to="#"
+                                iconClass="fas fa-apple-alt"
+                                onClick={openAddFoodModal}
+                            />
+                            <NavItem
+                                to="#"
+                                iconClass="fas fa-running"
+                                onClick={openAddActivityModal}
+                            />
+                        </>
+                    )}
                 </ul>
             </nav>
-            <FindActivityModal show={isModalOpen} handleClose={closeModal} />
+            <FindActivityModal show={isActivityModalOpen} handleClose={closeActivityModal} />
+            <AddFoodModal show={isAddFoodModalOpen} handleClose={closeAddFoodModal} />
+            <AddActivityModal show={isAddActivityModalOpen} handleClose={closeAddActivityModal} />
         </header>
     );
 };
