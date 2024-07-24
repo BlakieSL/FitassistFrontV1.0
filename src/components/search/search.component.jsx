@@ -2,17 +2,27 @@ import React, { useState, useContext } from 'react';
 import { ApiContext } from '../../contexts/api.context';
 import { useNavigate } from 'react-router-dom';
 
+
 const SearchForm = () => {
     const [query, setQuery] = useState('');
     const [category, setCategory] = useState('foods');
     const [suggestions, setSuggestions] = useState([]);
     const { searchAll } = useContext(ApiContext);
     const navigate = useNavigate();
+
     const categoryMap = {
         foods: 'food',
         activities: 'activity',
         exercises: 'exercise',
     };
+
+    const categoryIcons = {
+        foods: <i className="fas fa-apple-alt"></i>,
+        activities: <i className="fas fa-running"></i>,
+        exercises: <i className="fas fa-dumbbell"></i>,
+    };
+
+    const categories = ['foods', 'activities', 'exercises'];
 
     const handleInputChange = async (e) => {
         const newQuery = e.target.value;
@@ -40,13 +50,17 @@ const SearchForm = () => {
         navigate(`/${singularCategory}/${id}`);
     };
 
+    const toggleCategory = () => {
+        const currentIndex = categories.indexOf(category);
+        const nextIndex = (currentIndex + 1) % categories.length;
+        setCategory(categories[nextIndex]);
+    };
+
     return (
         <form id="searchForm" className="search-form" autoComplete="off" onSubmit={handleSubmit}>
-            <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                <option value="foods">Foods</option>
-                <option value="activities">Activities</option>
-                <option value="exercises">Exercises</option>
-            </select>
+            <button type="button" className="category-toggle-button" onClick={toggleCategory}>
+                {categoryIcons[category]}
+            </button>
             <input
                 type="search"
                 placeholder="Search..."
