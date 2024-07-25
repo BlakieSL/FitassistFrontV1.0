@@ -11,7 +11,10 @@ import User from './routes/user/user.component';
 import SearchResults from "./routes/searchResults/searchResults.component";
 import Exercises from "./routes/exercises/exercises.component";
 import Exercise from "./routes/exercise/exercise.component";
-
+import Plans from "./routes/plans/plans.component";
+import Plan from "./routes/plan/plan.component";
+import Recipes from "./routes/recipes/recipes.component";
+import Recipe from "./routes/recipe/recipe.component";
 const App = () => {
   return (
       <Router>
@@ -20,11 +23,15 @@ const App = () => {
           <Route path='registration' element={<Registration />} />
           <Route path='/' element={<Navigation />}>
             <Route path='foods' element={<Foods />} />
-            <Route path='food/:id' element={<Food />} />
+            <Route path='foods/:id' element={<Food />} />
             <Route path='activities' element={<Activities />} />
-            <Route path='activity/:id' element={<Activity />} />
+            <Route path='activities/:id' element={<Activity />} />
             <Route path='exercises' element={<Exercises />} />
-            <Route path='exercise/:id' element={<Exercise />} />
+            <Route path='exercises/:id' element={<Exercise />} />
+            <Route path='plans' element={<Plans />} />
+            <Route path='plans/:id' element={<Plan />} />
+            <Route path='recipes' element={<Recipes />} />
+            <Route path='recipes/:id' element={<Recipe />} />
             <Route path='cart' element={<Cart />} />
             <Route path='userInfo' element={<User />} />
             <Route path='searchResults' element={<SearchResults />} />

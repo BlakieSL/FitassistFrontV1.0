@@ -6,7 +6,7 @@ const ActivityList = ({ activities }) => {
     const navigate = useNavigate();
 
     const handleActivityClick = (activityId) => {
-        navigate(`/activity/${activityId}`);
+        navigate(`/activities/${activityId}`);
     };
 
     return (

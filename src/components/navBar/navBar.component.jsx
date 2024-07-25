@@ -74,6 +74,16 @@ const Navbar = () => {
                     />
                     <NavItem
                         to="#"
+                        iconClass="fas fa-clipboard"
+                        onClick={() => handleNavigation('/plans')}
+                    />
+                    <NavItem
+                        to="#"
+                        iconClass="fas fa-utensils"
+                        onClick={() => handleNavigation('/recipes')}
+                    />
+                    <NavItem
+                        to="#"
                         iconClass="fas fa-shopping-cart"
                         onClick={() => handleNavigation('/cart')}
                     />

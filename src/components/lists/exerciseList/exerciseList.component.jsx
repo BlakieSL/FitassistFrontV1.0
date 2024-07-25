@@ -6,7 +6,7 @@ const ExerciseList = ({ exercises }) => {
     const navigate = useNavigate();
 
     const handleExerciseClick = (exerciseId) => {
-        navigate(`/exercise/${exerciseId}`);
+        navigate(`/exercises/${exerciseId}`);
     }
 
     return (
@@ -27,6 +27,6 @@ const ExerciseList = ({ exercises }) => {
             )}
         </div>
     );
-};
+}
 
 export default ExerciseList;

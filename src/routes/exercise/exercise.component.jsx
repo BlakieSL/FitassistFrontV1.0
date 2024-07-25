@@ -14,7 +14,7 @@ const Exercise = () => {
                 const exerciseData = await fetchExerciseById(id);
                 setExercise(exerciseData);
             } catch (error){
-                console.error('Error fetching food:',error);
+                console.error("Error fetching food:",error);
             }
         }
         fetchExercise();

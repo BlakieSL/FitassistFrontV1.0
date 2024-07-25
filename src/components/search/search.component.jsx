@@ -10,12 +10,6 @@ const SearchForm = () => {
     const { searchAll } = useContext(ApiContext);
     const navigate = useNavigate();
 
-    const categoryMap = {
-        foods: 'food',
-        activities: 'activity',
-        exercises: 'exercise',
-    };
-
     const categoryIcons = {
         foods: <i className="fas fa-apple-alt"></i>,
         activities: <i className="fas fa-running"></i>,
@@ -46,8 +40,7 @@ const SearchForm = () => {
     };
 
     const handleSuggestionClick = (id) => {
-        const singularCategory = categoryMap[category];
-        navigate(`/${singularCategory}/${id}`);
+        navigate(`/${category}/${id}`);
     };
 
     const toggleCategory = () => {

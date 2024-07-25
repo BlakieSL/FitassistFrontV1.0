@@ -5,7 +5,7 @@ const FoodList = ({ foods }) => {
     const navigate = useNavigate();
 
     const handleFoodClick = (foodId) => {
-        navigate(`/food/${foodId}`);
+        navigate(`/foods/${foodId}`);
     }
 
     return (
