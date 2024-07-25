@@ -9,19 +9,32 @@ const getToken = () => localStorage.getItem('jwt');
 const verifyToken = () => {
     const token = getToken();
     if (!token) {
-        throw new Error('No token found');
+        window.location.href = '/login';
+        throw new Error('no token found');
     }
     return token;
 };
 
 const getUserId = () => {
-    const payload = jwtDecode(verifyToken());
-    return payload.userId;
+    try {
+        const token = verifyToken();
+        const payload = jwtDecode(token);
+        return payload.userId;
+    } catch (error) {
+        console.log('Error getting user ID:', error);
+        return null;
+    }
 };
 
 const getUserRole = () => {
-    const payload = jwtDecode(verifyToken());
-    return payload.authorities || [];
+    try {
+        const token = verifyToken();
+        const payload = jwtDecode(token);
+        return payload.authorities || [];
+    } catch (error) {
+        console.log('Error getting user role:', error);
+        return [];
+    }
 };
 
 const verifyResponse = (response) => {
