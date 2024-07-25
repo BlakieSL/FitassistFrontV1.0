@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
-import TextOutput from '../textOutput/textOutput.component';
-import TextInput from '../textInput/textInput.component';
-import { ApiContext }  from "../../contexts/api.context";
+import TextOutput from '../../textOutput/textOutput.component';
+import TextInput from '../../textInput/textInput.component';
+import { ApiContext }  from "../../../contexts/api.context";
+import TextOutputTitle from "../../textOutputTitle/textOutputTitle.component";
 
 const FoodDetails = ({ food }) => {
     const [amount, setAmount] = useState('');
@@ -44,7 +45,7 @@ const FoodDetails = ({ food }) => {
 
     return (
         <div>
-            <h1 id="foodName">{updatedFood.name}</h1>
+            <TextOutputTitle id="foodName" value={food.name} />
             <TextOutput
                 iconClass="fas fa-fire"
                 id="foodCalories"

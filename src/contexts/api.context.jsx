@@ -1,6 +1,6 @@
-import React, {createContext, useContext} from 'react';
+import React, { createContext, useContext } from 'react';
 import axios from 'axios';
-import {UserContext} from './user.context';
+import { UserContext } from './user.context';
 
 export const ApiContext = createContext({
     fetchFoods: () => null,
@@ -26,202 +26,160 @@ export const ApiContext = createContext({
     modifyCartActivity: () => null,
     addFood: () => null,
     addActivity: () => null,
+    addExercise: () => null,
+    addPlan: () => null,
+    addRecipe: () => null,
+    fetchExercises: () => null,
+    fetchRecipes: () => null,
+    fetchPlans: () => null,
+    fetchExerciseById: () => null,
+    fetchRecipeById: () => null,
+    fetchPlanById: () => null,
 });
 
 export const ApiProvider = ({ children }) => {
-    const { verifyToken, verifyResponse, fetchCurrentUser, logout, currentUser } = useContext(UserContext);
-
-    const getRequestOptions = (token) => ({
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
+    const { verifyResponse, fetchCurrentUser, logout, currentUser } = useContext(UserContext);
 
     const register = async (userData) => {
-        const response = await axios.post('http://localhost:8000/api/users/register', userData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        const response = await axios.post(
+            'http://localhost:8000/api/users/register',
+            userData
+        );
         verifyResponse(response);
         window.location.href = '/login';
     };
 
     const login = async (credentials) => {
-        const response = await axios.post('http://localhost:8000/api/users/login', credentials, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
+        const response = await axios.post(
+            'http://localhost:8000/api/users/login',
+            credentials
+        );
         const data = response.data;
-        localStorage.setItem('jwt', data.token);
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
         await fetchCurrentUser();
-        window.location.href = '/foods'
+        window.location.href = '/foods';
     };
 
     const fetchFoods = async () => {
-        const token = verifyToken();
-
-        const url = 'http://localhost:8000/api/foods';
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.get(url, requestOptions);
+        const response = await axios.get(
+            'http://localhost:8000/api/foods'
+        );
         verifyResponse(response);
         return response.data;
     };
 
     const fetchFoodById = async (foodId) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/foods/${foodId}`;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.get(url, requestOptions);
+        const response = await axios.get(
+            `http://localhost:8000/api/foods/${foodId}`
+        );
         verifyResponse(response);
         return response.data;
     };
 
     const calculateMacros = async (foodId, amount) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/foods/${foodId}/calculate-macros`;
-        const payload = { amount: parseInt(amount) };
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.post(url, payload, requestOptions);
+        const response = await axios.post(
+            `http://localhost:8000/api/foods/${foodId}/calculate-macros`,
+            { amount: parseInt(amount) }
+        );
         verifyResponse(response);
         return response.data;
     };
 
     const addToCart = async (foodId, amount) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/cart/${currentUser.id}/add`;
-        const payload = { id: foodId, amount: parseInt(amount) }
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.post(url, payload, requestOptions);
+        const response = await axios.post(
+            `http://localhost:8000/api/cart/${currentUser.id}/add`,
+            { id: foodId, amount: parseInt(amount) }
+        );
         verifyResponse(response);
         alert('Food added successfully');
     };
 
     const fetchActivities = async () => {
-        const token = verifyToken();
-
-        const url = 'http://localhost:8000/api/activities';
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.get(url, requestOptions);
+        const response = await axios.get(
+            'http://localhost:8000/api/activities'
+        );
         verifyResponse(response);
         return response.data;
-    }
+    };
 
     const fetchActivityById = async (activityId) => {
-        const token = verifyToken();
-
-        const url =  `http://localhost:8000/api/activities/${activityId}`;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.get(url,requestOptions);
+        const response = await axios.get(
+            `http://localhost:8000/api/activities/${activityId}`
+        );
         verifyResponse(response);
         return response.data;
-    }
+    };
 
     const calculateCaloriesBurned = async (activityId, time) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/activities/${activityId}/calculate-calories`
-        const payload = {userId: currentUser.id, time: parseInt(time) };
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.post(url, payload, requestOptions);
+        const response = await axios.post(
+            `http://localhost:8000/api/activities/${activityId}/calculate-calories`,
+            { userId: currentUser.id, time: parseInt(time) }
+        );
         verifyResponse(response);
         return response.data;
-    }
+    };
 
     const addToDailyActivities = async (activityId, time) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/daily-activities/${currentUser.id}/add`;
-        const payload = {id: activityId, time: parseInt(time) };
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.post(url, payload, requestOptions);
+        const response = await axios.post(
+            `http://localhost:8000/api/daily-activities/${currentUser.id}/add`,
+            { id: activityId, time: parseInt(time) }
+        );
         verifyResponse(response);
         alert('Activity added successfully');
-    }
+    };
 
-    const fetchCartFoods = async() => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/cart/${currentUser.id}`;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.get(url, requestOptions);
+    const fetchCartFoods = async () => {
+        const response = await axios.get(
+            `http://localhost:8000/api/cart/${currentUser.id}`
+        );
         verifyResponse(response);
         return response.data;
-    }
+    };
 
-    const fetchDailyActivities = async() => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/daily-activities/${currentUser.id}`
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.get(url,requestOptions);
+    const fetchDailyActivities = async () => {
+        const response = await axios.get(
+            `http://localhost:8000/api/daily-activities/${currentUser.id}`
+        );
         verifyResponse(response);
         return response.data;
-    }
+    };
 
-    const updateUser = async(userData) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/users/${currentUser.id}`;
-        const payload = userData;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.patch(url, payload,requestOptions);
+    const updateUser = async (userData) => {
+        const response = await axios.patch(
+            `http://localhost:8000/api/users/${currentUser.id}`,
+            userData
+        );
         verifyResponse(response);
         return response.data;
-    }
+    };
 
-    const deleteUser = async() => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/users/${currentUser.id}`;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.delete(url,requestOptions);
+    const deleteUser = async () => {
+        const response = await axios.delete(
+            `http://localhost:8000/api/users/${currentUser.id}`
+        );
         verifyResponse(response);
         alert('User deleted successfully');
         logout();
-    }
+    };
 
-    const fetchCategories = async() => {
-        const token = verifyToken();
-
-        const url = 'http://localhost:8000/api/activity-categories';
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.get(url, requestOptions);
+    const fetchCategories = async () => {
+        const response = await axios.get(
+            'http://localhost:8000/api/activity-categories'
+        );
         verifyResponse(response);
         return response.data;
-    }
+    };
 
-    const fetchActivitiesByCategory = async(categoryId) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/activity-categories/${categoryId}/activities`;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.get(url, requestOptions);
+    const fetchActivitiesByCategory = async (categoryId) => {
+        const response = await axios.get(
+            `http://localhost:8000/api/activity-categories/${categoryId}/activities`
+        );
         verifyResponse(response);
         return response.data;
-    }
+    };
 
     const searchAll = async (query, type) => {
-        const token = verifyToken();
         const urlMap = {
             foods: 'http://localhost:8000/api/foods/search',
             activities: 'http://localhost:8000/api/activities/search',
@@ -235,8 +193,7 @@ export const ApiProvider = ({ children }) => {
         try {
             const response = await axios.post(
                 urlMap[type],
-                { name: query },
-                getRequestOptions(token)
+                { name: query }
             );
             verifyResponse(response);
             return response.data;
@@ -246,72 +203,129 @@ export const ApiProvider = ({ children }) => {
         }
     };
 
-    const deleteFoodFromCart = async(foodId) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/cart/${currentUser.id}/remove/${foodId}`;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.delete(url, requestOptions);
+    const deleteFoodFromCart = async (foodId) => {
+        const response = await axios.delete(
+            `http://localhost:8000/api/cart/${currentUser.id}/remove/${foodId}`
+        );
         verifyResponse(response);
         alert("food was successfully removed from cart");
-    }
+    };
 
-    const deleteActivityFromCart = async(activityId) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/daily-activities/${currentUser.id}/remove/${activityId}`;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.delete(url, requestOptions);
+    const deleteActivityFromCart = async (activityId) => {
+        const response = await axios.delete(
+            `http://localhost:8000/api/daily-activities/${currentUser.id}/remove/${activityId}`
+        );
         verifyResponse(response);
         alert("activity was successfully removed from cart");
-    }
+    };
 
-    const modifyCartFood = async(foodId, patch) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/cart/${currentUser.id}/modify-food/${foodId}`;
-        const payload =  patch ;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.patch(url, payload, requestOptions);
+    const modifyCartFood = async (foodId, patch) => {
+        const response = await axios.patch(
+            `http://localhost:8000/api/cart/${currentUser.id}/modify-food/${foodId}`,
+            patch
+        );
         verifyResponse(response);
-    }
+    };
 
-    const modifyCartActivity = async(activityId, patch) => {
-        const token = verifyToken();
-
-        const url = `http://localhost:8000/api/daily-activities/${currentUser.id}/modify-activity/${activityId}`;
-        const payload =  patch ;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.patch(url, payload, requestOptions);
+    const modifyCartActivity = async (activityId, patch) => {
+        const response = await axios.patch(
+            `http://localhost:8000/api/daily-activities/${currentUser.id}/modify-activity/${activityId}`,
+            patch
+        );
         verifyResponse(response);
-    }
+    };
 
-    const addFood = async(foodData) => {
-        const token = verifyToken();
-
-        const url = 'http://localhost:8000/api/foods';
-        const payload = foodData;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.post(url, payload, requestOptions);
+    const addFood = async (foodData) => {
+        const response = await axios.post(
+            'http://localhost:8000/api/foods',
+            foodData
+        );
         verifyResponse(response);
         alert('food added successfully');
-    }
+    };
 
-    const addActivity = async(activityData) => {
-        const token = verifyToken();
-
-        const url = 'http://localhost:8000/api/activities';
-        const payload = activityData;
-        const requestOptions = getRequestOptions(token);
-
-        const response = await axios.post(url, payload, requestOptions);
+    const addActivity = async (activityData) => {
+        const response = await axios.post(
+            'http://localhost:8000/api/activities',
+            activityData
+        );
         verifyResponse(response);
         alert('activity added successfully');
+    };
+
+    const addExercise = async (exerciseData) => {
+        const response = await axios.post(
+            'http://localhost:8000/api/exercises',
+            exerciseData
+        );
+        verifyResponse(response);
+        alert('exercise added successfully');
+    }
+
+    const addPlan = async (planData) => {
+        const response = await axios.post(
+            'http://localhost:8000/api/plans',
+            planData
+        );
+        verifyResponse(response);
+        alert('plan added successfully');
+    }
+
+    const addRecipe = async (recipeData) => {
+        const response = await axios.post(
+            'http://localhost:8000/api/recipes',
+            recipeData
+        );
+        verifyResponse(response);
+        alert('recipe added successfully')
+    }
+
+    const fetchExercises = async () => {
+        const response = await axios.get(
+            'http://localhost:8000/api/exercises'
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchRecipes = async () => {
+        const response = await axios.get(
+            'http://localhost:8000/api/recipes'
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchPlans = async () => {
+        const response = await axios.get(
+            'http://localhost:8000/api/plans'
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchExerciseById = async (exerciseId) => {
+        const response = await axios.get(
+            `http://localhost:8000/api/exercises/${exerciseId}`
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchRecipeById = async (recipeId) => {
+        const response = await axios.get(
+            `http://localhost:8000/api/recipes/${recipeId}`
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchPlanById = async (planId) => {
+        const response = await axios.get(
+            `http://localhost:8000/api/plans/${planId}`
+        );
+        verifyResponse(response);
+        return response.data;
     }
 
     const value = {
@@ -337,7 +351,16 @@ export const ApiProvider = ({ children }) => {
         modifyCartFood,
         modifyCartActivity,
         addFood,
-        addActivity
+        addActivity,
+        addExercise,
+        addPlan,
+        addRecipe,
+        fetchExercises,
+        fetchRecipes,
+        fetchPlans,
+        fetchExerciseById,
+        fetchRecipeById,
+        fetchPlanById
     };
 
     return (

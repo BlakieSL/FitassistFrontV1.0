@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import FoodDetails from '../../components/foodCard/foodDetailsCard.component';
+import FoodDetails from '../../components/cards/foodCard/foodDetailsCard.component';
 import { ApiContext } from '../../contexts/api.context';
 
 const Food = () => {
@@ -16,7 +16,7 @@ const Food = () => {
             } catch (error) {
                 console.error('Error fetching food:', error);
             }
-        };
+        }
         fetchFood();
     }, [id, fetchFoodById]);
 
@@ -25,6 +25,6 @@ const Food = () => {
     }
 
     return <FoodDetails food={food} />;
-};
+}
 
 export default Food;

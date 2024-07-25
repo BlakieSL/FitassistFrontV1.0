@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ApiContext } from '../../contexts/api.context';
-import CartFoods from '../../components/cartFoods/cartFoods.component';
-import CartActivities from '../../components/cartActivities/cartActivities.component';
-import CartTotals from '../../components/cartTotals/cartTotals.component';
+import CartFoods from '../../components/cart/cartFoods/cartFoods.component';
+import CartActivities from '../../components/cart/cartActivities/cartActivities.component';
+import CartTotals from '../../components/cart/cartTotals/cartTotals.component';
 import UpdateCartModal from '../../components/updateCartModal/updateCartModal.component';
 
 const Cart = () => {

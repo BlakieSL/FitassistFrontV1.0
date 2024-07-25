@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import TextOutput from "../textOutput/textOutput.component";
-import TextOutputTitle from "../textOutputTitle/textOutputTitle.component";
+import TextOutput from "../../textOutput/textOutput.component";
+import TextOutputTitle from "../../textOutputTitle/textOutputTitle.component";
 
 const CartActivities = ({ activities, editMode, handleUpdate, handleDelete }) => {
     const navigate = useNavigate();

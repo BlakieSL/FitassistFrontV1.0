@@ -1,7 +1,7 @@
 import React, {useState, useRef, useContext} from 'react';
-import ModalComponent from '../modalComponent/modal.component';
-import TextInput from '../textInput/textInput.component';
-import {ApiContext} from "../../contexts/api.context";
+import ModalComponent from '../../modalComponent/modal.component';
+import TextInput from '../../textInput/textInput.component';
+import {ApiContext} from "../../../contexts/api.context";
 import {add} from "react-modal/lib/helpers/classList";
 
 const AddFoodModalComponent = ({ show, handleClose }) => {

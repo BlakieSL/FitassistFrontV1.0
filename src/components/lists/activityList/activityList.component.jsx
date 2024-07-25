@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import ActivityCard from '../activityCard/activityCard.component';
+import ActivityCard from '../../cards/activityCard/activityCard.component';
 
 const ActivityList = ({ activities }) => {
     const navigate = useNavigate();

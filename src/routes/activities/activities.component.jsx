@@ -1,5 +1,5 @@
 import {useEffect, useState, useContext} from "react";
-import ActivityList from "../../components/activityList/activityList.component";
+import ActivityList from "../../components/lists/activityList/activityList.component";
 import {ApiContext} from "../../contexts/api.context";
 
 const Activities = () => {

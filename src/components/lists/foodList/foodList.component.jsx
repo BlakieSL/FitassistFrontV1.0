@@ -1,4 +1,4 @@
-import FoodCard from '../foodCard/foodCard.component';
+import FoodCard from '../../cards/foodCard/foodCard.component';
 import {useNavigate} from "react-router-dom";
 
 const FoodList = ({ foods }) => {

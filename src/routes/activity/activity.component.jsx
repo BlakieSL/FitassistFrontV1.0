@@ -1,6 +1,6 @@
 import {useContext, useState, useEffect} from "react";
 import { useParams} from "react-router-dom";
-import ActivityDetails from "../../components/activityCard/activityDetailsCard.component";
+import ActivityDetails from "../../components/cards/activityCard/activityDetailsCard.component";
 import { ApiContext} from "../../contexts/api.context";
 
 const Activity = () => {

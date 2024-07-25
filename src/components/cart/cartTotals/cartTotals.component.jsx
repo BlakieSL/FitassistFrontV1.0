@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { UserContext } from '../../contexts/user.context';
-import TextOutput from "../textOutput/textOutput.component";
-import TextOutputTitle from "../textOutputTitle/textOutputTitle.component";
+import { UserContext } from '../../../contexts/user.context';
+import TextOutput from "../../textOutput/textOutput.component";
+import TextOutputTitle from "../../textOutputTitle/textOutputTitle.component";
 const CartTotals = ({ foods, activities }) => {
     const { currentUser } = useContext(UserContext);
 

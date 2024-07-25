@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import FoodList from '../../components/foodList/foodList.component';
+import FoodList from '../../components/lists/foodList/foodList.component';
 import { ApiContext } from '../../contexts/api.context';
 
 const Foods = () => {
@@ -12,7 +12,7 @@ const Foods = () => {
                 const foodsData = await fetchFoods();
                 setFoods(foodsData);
             } catch (error) {
-                console.error('Error fetching foods:', error);
+                console.error("Error fetching foods:", error);
             }
         };
         fetchData();
@@ -25,6 +25,6 @@ const Foods = () => {
             <FoodList foods={foods} />
         </div>
     );
-};
+}
 
 export default Foods;

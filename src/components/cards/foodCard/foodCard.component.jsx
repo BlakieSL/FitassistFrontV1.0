@@ -1,5 +1,5 @@
-import TextOutput from "../textOutput/textOutput.component";
-import TextOutputTitle from "../textOutputTitle/textOutputTitle.component";
+import TextOutput from "../../textOutput/textOutput.component";
+import TextOutputTitle from "../../textOutputTitle/textOutputTitle.component";
 const FoodCard = ({ name, calories }) => {
     return (
         <div>

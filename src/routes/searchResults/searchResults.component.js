@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ApiContext } from '../../contexts/api.context';
-import FoodList from "../../components/foodList/foodList.component";
-import ActivityList from "../../components/activityList/activityList.component";
+import FoodList from "../../components/lists/foodList/foodList.component";
+import ActivityList from "../../components/lists/activityList/activityList.component";
 
 const useQuery = () => {
     return new URLSearchParams(useLocation().search);
