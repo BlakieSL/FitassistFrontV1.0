@@ -7,7 +7,7 @@ const ActivityDetails = ({ activity }) => {
     const [time, setTime] = useState('');
     const [caloriesBurned, setCaloriesBurned] = useState(null);
     const [error, setError] = useState('');
-    const { calculateCaloriesBurned, addToDailyActivities } = useContext(ApiContext);
+    const { calculateCaloriesBurned, addToDailyActivities, addActivityToUser } = useContext(ApiContext);
 
     useEffect(() => {
         setCaloriesBurned(null);
@@ -44,6 +44,14 @@ const ActivityDetails = ({ activity }) => {
         }
     };
 
+    const handleAddExercise = async () => {
+        try{
+            await addActivityToUser(activity.id);
+        } catch (error){
+            console.error('Error occurred during saving activity:',error);
+        }
+    }
+
     return (
         <div>
             <TextOutputTitle id="activityName" value={activity.name} />
@@ -77,6 +85,7 @@ const ActivityDetails = ({ activity }) => {
                 />
                 <button id="calculateCalories" onClick={handleCalculateCalories}>Calculate</button>
                 <button id="addToDailyActivities" onClick={handleAddToDailyActivities}>Add</button>
+                <button id="addToSaved" onClick={handleAddExercise}>Save</button>
                 <p id="buttonsError">{error}</p>
             </div>
         </div>

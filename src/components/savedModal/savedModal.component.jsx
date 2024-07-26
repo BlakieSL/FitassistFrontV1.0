@@ -20,6 +20,8 @@ const SavedItemsModal = ({ show, handleClose }) => {
                     <Button className="mb-2" variant="primary" onClick={() => handleViewSavedItems('plans')}>Saved Plans</Button>
                     <Button className="mb-2" variant="primary" onClick={() => handleViewSavedItems('exercises')}>Saved Exercises</Button>
                     <Button className="mb-2" variant="primary" onClick={() => handleViewSavedItems('recipes')}>Saved Recipes</Button>
+                    <Button className="mb-2" variant="primary" onClick={() => handleViewSavedItems('foods')}>Saved Foods</Button>
+                    <Button className="mb-2" variant="primary" onClick={() => handleViewSavedItems('activities')}>Saved Activities</Button>
                 </div>
             </Modal.Body>
             <Modal.Footer>

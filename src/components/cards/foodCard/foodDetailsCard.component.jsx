@@ -8,7 +8,8 @@ const FoodDetails = ({ food }) => {
     const [amount, setAmount] = useState('');
     const [error, setError] = useState('');
     const [updatedFood, setUpdatedFood] = useState(food);
-    const { calculateMacros, addToCart} = useContext(ApiContext);
+    const { calculateMacros, addToCart, addFoodToUser } = useContext(ApiContext);
+
 
     useEffect(() => {
         setUpdatedFood(food);
@@ -42,6 +43,14 @@ const FoodDetails = ({ food }) => {
             console.error('Error occurred during adding to carr:', error);
         }
     };
+
+    const handleAddExercise = async () => {
+        try{
+            await addFoodToUser(food.id);
+        } catch (error){
+            console.error('Error occurred during saving food:',error);
+        }
+    }
 
     return (
         <div>
@@ -84,6 +93,7 @@ const FoodDetails = ({ food }) => {
                 />
                 <button id="calculateMacros" onClick={handleCalculateMacros}>Calculate</button>
                 <button id="addToCart" onClick={handleAddToCart}>Add</button>
+                <button id="addToSaved" onClick={handleAddExercise}>Save</button>
                 <p id="buttonsError">{error}</p>
             </div>
         </div>
