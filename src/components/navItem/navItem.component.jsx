@@ -1,6 +1,7 @@
+import React, { forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const NavItem = ({ to, iconClass, id, onClick }) => {
+const NavItem = forwardRef(({ to, iconClass, id, onClick }, ref) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -12,11 +13,10 @@ const NavItem = ({ to, iconClass, id, onClick }) => {
     };
 
     return (
-        <li className="navbar-item" id={id} onClick={handleClick} >
-                <i className={iconClass}></i>
+        <li className="navbar-item" id={id} onClick={handleClick} ref={ref}>
+            <i className={iconClass}></i>
         </li>
     );
-};
+});
 
 export default NavItem;
-
