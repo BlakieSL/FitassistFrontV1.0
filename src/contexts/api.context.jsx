@@ -35,6 +35,15 @@ export const ApiContext = createContext({
     fetchExerciseById: () => null,
     fetchRecipeById: () => null,
     fetchPlanById: () => null,
+    fetchUserPlans: () => null,
+    fetchUserExercises: () => null,
+    fetchUserRecipes: () => null,
+    addRecipeToUser: () => null,
+    deleteRecipeFromUser: () => null,
+    addExerciseToUser: () => null,
+    deleteExerciseFromUser: () => null,
+    addPlanToUser: () => null,
+    deletePlanFromUser: () => null
 });
 
 export const ApiProvider = ({ children }) => {
@@ -328,6 +337,78 @@ export const ApiProvider = ({ children }) => {
         return response.data;
     }
 
+    const fetchUserRecipes = async () => {
+        const response = await axios.get(
+            `http://localhost:8000/api/recipes/user/${currentUser.id}`
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchUserExercises = async () => {
+        const response = await axios.get(
+            `http://localhost:8000/api/exercises/user/${currentUser.id}`
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchUserPlans = async () => {
+        const response = await axios.get(
+            `http://localhost:8000/api/plans/user/${currentUser.id}`
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const addRecipeToUser = async (recipeId) => {
+        const response = await axios.post(
+            `http://localhost:8000/api/users/${currentUser.id}/recipes/${recipeId}`
+        );
+        verifyResponse(response);
+        alert('recipe saved successfully');
+    }
+
+    const deleteRecipeFromUser = async (recipeId) => {
+        const response = await axios.delete(
+            `http://localhost:8000/api/users/${currentUser.id}/recipes/${recipeId}`
+        );
+        verifyResponse(response);
+        alert('recipe removed successfully');
+    }
+
+    const addExerciseToUser = async (exerciseId) => {
+        const response = await axios.post(
+            `http://localhost:8000/api/users/${currentUser.id}/exercises/${exerciseId}`
+        );
+        verifyResponse(response);
+        alert('exercise saved successfully');
+    }
+
+    const deleteExerciseFromUser = async (exerciseId) => {
+        const response = await axios.delete(
+            `http://localhost:8000/api/users/${currentUser.id}/exercises/${exerciseId}`
+        );
+        verifyResponse(response);
+        alert('exercise removed successfully');
+    }
+
+    const addPlanToUser = async (planId) => {
+        const response = await axios.post(
+            `http://localhost:8000/api/users/${currentUser.id}/plans/${planId}`
+        );
+        verifyResponse(response);
+        alert('plan saved successfully');
+    }
+
+    const deletePlanFromUser = async (planId) => {
+        const response = await axios.delete(
+            `http://localhost:8000/api/users/${currentUser.id}/plans/${planId}`
+        );
+        verifyResponse(response);
+        alert('plan removed successfully');
+    }
+
     const value = {
         fetchFoods,
         calculateMacros,
@@ -360,7 +441,16 @@ export const ApiProvider = ({ children }) => {
         fetchPlans,
         fetchExerciseById,
         fetchRecipeById,
-        fetchPlanById
+        fetchPlanById,
+        fetchUserPlans,
+        fetchUserExercises,
+        fetchUserRecipes,
+        addRecipeToUser,
+        deleteRecipeFromUser,
+        addExerciseToUser,
+        deleteExerciseFromUser,
+        addPlanToUser,
+        deletePlanFromUser,
     };
 
     return (

@@ -15,6 +15,7 @@ import Plans from "./routes/plans/plans.component";
 import Plan from "./routes/plan/plan.component";
 import Recipes from "./routes/recipes/recipes.component";
 import Recipe from "./routes/recipe/recipe.component";
+import SavedItemsPage from "./routes/savedItems/savedItemsPage";
 const App = () => {
   return (
       <Router>
@@ -35,6 +36,7 @@ const App = () => {
             <Route path='cart' element={<Cart />} />
             <Route path='userInfo' element={<User />} />
             <Route path='searchResults' element={<SearchResults />} />
+            <Route path='savedItems/:type' element={<SavedItemsPage />} />
           </Route>
         </Routes>
       </Router>

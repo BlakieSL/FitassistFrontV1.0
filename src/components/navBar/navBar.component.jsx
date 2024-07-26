@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import SearchForm from '../search/search.component';
 import NavItem from '../navItem/navItem.component';
 import FindActivityModal from '../findActivityModal/findActivityModal.component';
@@ -9,16 +8,17 @@ import AddExerciseModal from '../addModals/addExerciseModal/addExerciseModal.com
 import AddPlanModal from '../addModals/addPlanModal/addPlanModal.component';
 import AddRecipeModal from '../addModals/addRecipeModal/addRecipeModal.component';
 import { UserContext } from '../../contexts/user.context';
+import SavedItemsModal from "../savedModal/savedModal.component";
 
 const Navbar = () => {
-    const navigate = useNavigate();
-    const { currentUser, getUserRole } = useContext(UserContext);
+    const { getUserRole } = useContext(UserContext);
     const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
     const [isAddFoodModalOpen, setIsAddFoodModalOpen] = useState(false);
     const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState(false);
     const [isAddExerciseModalOpen, setIsAddExerciseModalOpen] = useState(false);
     const [isAddPlanModalOpen, setIsAddPlanModalOpen] = useState(false);
     const [isAddRecipeModalOpen, setIsAddRecipeModalOpen] = useState(false);
+    const [isSavedItemsModalOpen, setIsSavedItemsModalOpen] = useState(false);
 
     const openActivityModal = () => setIsActivityModalOpen(true);
     const closeActivityModal = () => setIsActivityModalOpen(false);
@@ -38,9 +38,8 @@ const Navbar = () => {
     const openAddRecipeModal = () => setIsAddRecipeModalOpen(true);
     const closeAddRecipeModal = () => setIsAddRecipeModalOpen(false);
 
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
+    const openSavedItemsModal = () => setIsSavedItemsModalOpen(true);
+    const closeSavedItemsModal = () => setIsSavedItemsModalOpen(false);
 
     const isAdmin = getUserRole().includes('ROLE_ADMIN');
 
@@ -58,39 +57,37 @@ const Navbar = () => {
                         onClick={openActivityModal}
                     />
                     <NavItem
-                        to="#"
+                        to="/foods"
                         iconClass="fas fa-apple-alt"
-                        onClick={() => handleNavigation('/foods')}
                     />
                     <NavItem
-                        to="#"
+                        to="/activities"
                         iconClass="fas fa-running"
-                        onClick={() => handleNavigation('/activities')}
                     />
                     <NavItem
-                        to="#"
+                        to="/exercises"
                         iconClass="fas fa-dumbbell"
-                        onClick={() => handleNavigation('/exercises')}
                     />
                     <NavItem
-                        to="#"
+                        to="/plans"
                         iconClass="fas fa-clipboard"
-                        onClick={() => handleNavigation('/plans')}
                     />
                     <NavItem
-                        to="#"
+                        to="/recipes"
                         iconClass="fas fa-utensils"
-                        onClick={() => handleNavigation('/recipes')}
                     />
                     <NavItem
-                        to="#"
+                        to="/cart"
                         iconClass="fas fa-shopping-cart"
-                        onClick={() => handleNavigation('/cart')}
+                    />
+                    <NavItem
+                        to="/userInfo"
+                        iconClass="fas fa-user"
                     />
                     <NavItem
                         to="#"
-                        iconClass="fas fa-user"
-                        onClick={() => handleNavigation('/userInfo')}
+                        iconClass="fas fa-save"
+                        onClick={openSavedItemsModal}
                     />
                     {isAdmin && (
                         <>
@@ -129,6 +126,7 @@ const Navbar = () => {
             <AddExerciseModal show={isAddExerciseModalOpen} handleClose={closeAddExerciseModal} />
             <AddPlanModal show={isAddPlanModalOpen} handleClose={closeAddPlanModal} />
             <AddRecipeModal show={isAddRecipeModalOpen} handleClose={closeAddRecipeModal} />
+            <SavedItemsModal show={isSavedItemsModalOpen} handleClose={closeSavedItemsModal} />
         </header>
     );
 };

@@ -1,30 +1,17 @@
-import {useNavigate} from "react-router-dom";
-import RecipeCard from "../../cards/recipeCard/recipeCard.component";
+import React from 'react';
+import RecipeCard from '../../cards/recipeCard/recipeCard.component';
+import GenericList from '../genericList/genericList.component';
 
-const RecipeList = ({ recipes}) => {
-    const navigate = useNavigate();
-
-    const handleRecipeClick = (recipeId) => {
-        navigate(`/recipes/${recipeId}`);
-    }
-
+const RecipeList = ({ recipes }) => {
     return (
-        <div>
-            {recipes.length > 0 ? (
-                recipes.map(plan => (
-                    <div
-                        key={plan.id}
-                        className="plan-link"
-                        onClick={() => handleRecipeClick(plan.id)}
-                        style={{ cursor: 'pointer'}}
-                    >
-                        <RecipeCard name={plan.name} />
-                    </div>
-                ))
-            ) : (
-                <p>No results found</p>
-            )}
-        </div>
+        <GenericList
+            items={recipes}
+            ItemComponent={RecipeCard}
+            itemKey="id"
+            itemProps={(recipe) => ({ name: recipe.name })}
+            routePrefix="recipes"
+        />
     );
 }
+
 export default RecipeList;

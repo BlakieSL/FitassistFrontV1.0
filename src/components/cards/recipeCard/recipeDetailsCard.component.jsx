@@ -1,8 +1,19 @@
 import TextOutputTitle from "../../textOutputTitle/textOutputTitle.component";
 import TextOutput from "../../textOutput/textOutput.component";
-import React from "react";
+import React, {useContext, useState} from "react";
+import {ApiContext} from "../../../contexts/api.context";
 
 const RecipeDetails = ({ recipe }) => {
+    const { addRecipeToUser } = useContext(ApiContext);
+
+    const handleAddRecipe = async () => {
+        try{
+            await addRecipeToUser(recipe.id);
+        } catch (error){
+            console.error('Error occurred during saving recipe:', error);
+        }
+    };
+
     return (
         <div>
             <TextOutputTitle id="recipeTitle" value={recipe.name} />
@@ -16,6 +27,7 @@ const RecipeDetails = ({ recipe }) => {
                 id="exerciseText"
                 value={`Text: ${recipe.text}`}
             />
+            <button id="addToSaved" onClick={handleAddRecipe}>Save</button>
         </div>
     )
 }

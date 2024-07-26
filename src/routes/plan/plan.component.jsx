@@ -13,7 +13,6 @@ const Plan = () => {
             try{
                 const planData = await fetchPlanById(id);
                 setPlan(planData);
-                console.log(plan);
             } catch (error){
                 console.error("Error fetching plan:",error);
             }
