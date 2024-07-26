@@ -17,8 +17,10 @@ export const ApiContext = createContext({
     fetchDailyActivities: () => null,
     updateUser: () => null,
     deleteUser: () => null,
-    fetchCategories: () => null,
+    fetchActivityCategories: () => null,
     fetchActivitiesByCategory: () => null,
+    fetchFoodCategories: () => null,
+    fetchFoodsByCategory: () => null,
     searchAll: () => null,
     deleteFoodFromCart: () => null,
     deleteActivityFromCart: () => null,
@@ -178,7 +180,7 @@ export const ApiProvider = ({ children }) => {
         logout();
     };
 
-    const fetchCategories = async () => {
+    const fetchActivityCategories = async () => {
         const response = await axios.get(
             'http://localhost:8000/api/activity-categories'
         );
@@ -193,6 +195,22 @@ export const ApiProvider = ({ children }) => {
         verifyResponse(response);
         return response.data;
     };
+
+    const fetchFoodCategories = async () => {
+        const response = await axios.get(
+            'http://localhost:8000/api/food-categories'
+        );
+        verifyResponse(response);
+        return response.data;
+    }
+
+    const fetchFoodsByCategory = async (categoryId) => {
+        const response = await axios.get(
+            `http://localhost:8000/api/food-categories/${categoryId}/foods`
+        );
+        verifyResponse(response);
+        return response.data;
+    }
 
     const searchAll = async (query, type) => {
         const urlMap = {
@@ -480,8 +498,10 @@ export const ApiProvider = ({ children }) => {
         fetchDailyActivities,
         updateUser,
         deleteUser,
-        fetchCategories,
+        fetchActivityCategories,
         fetchActivitiesByCategory,
+        fetchFoodCategories,
+        fetchFoodsByCategory,
         searchAll,
         deleteFoodFromCart,
         deleteActivityFromCart,

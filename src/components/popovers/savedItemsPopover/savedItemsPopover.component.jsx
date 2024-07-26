@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Popover, OverlayTrigger } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const SavedItemsPopover = ({ targetRef }) => {
+const SavedItemsPopover = () => {
     const navigate = useNavigate();
-
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const handleViewSavedItems = (type) => {
+        setIsPopoverOpen(false);
         navigate(`savedItems/${type}`);
     };
 
@@ -54,8 +55,15 @@ const SavedItemsPopover = ({ targetRef }) => {
     );
 
     return (
-        <OverlayTrigger trigger="click" placement="bottom" overlay={popover} rootClose>
-            <li className="navbar-item" ref={targetRef}>
+        <OverlayTrigger
+            trigger="click"
+            placement="bottom"
+            overlay={popover}
+            rootClose
+            onToggle={(nextShow) => setIsPopoverOpen(nextShow)}
+            show={isPopoverOpen}
+        >
+            <li className="navbar-item">
                 <i className="fas fa-save"></i>
             </li>
         </OverlayTrigger>

@@ -1,15 +1,15 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import SearchForm from '../search/search.component';
 import NavItem from '../navItem/navItem.component';
-import FindActivityModal from '../findActivityModal/findActivityModal.component';
+import FindModal from '../findModal/findModal.component';
 import { UserContext } from '../../contexts/user.context';
-import SavedItemsPopover from '../savedItemsPopover/savedItemsPopover.component';
-import AdminItemPopover from '../adminPanelPopover/adminPanelPopover.component';
+import SavedItemsPopover from '../popovers/savedItemsPopover/savedItemsPopover.component';
+import AdminItemPopover from '../popovers/adminPanelPopover/adminPanelPopover.component';
+import NavigationPopover from '../popovers/listsPopover/listsPopover.component';
 
 const Navbar = () => {
     const { getUserRole } = useContext(UserContext);
     const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
-    const target = useRef(null);
 
     const openActivityModal = () => setIsActivityModalOpen(true);
     const closeActivityModal = () => setIsActivityModalOpen(false);
@@ -29,41 +29,22 @@ const Navbar = () => {
                         id="openCalculatorModal"
                         onClick={openActivityModal}
                     />
-                    <NavItem
-                        to="/foods"
-                        iconClass="fas fa-apple-alt"
-                    />
-                    <NavItem
-                        to="/activities"
-                        iconClass="fas fa-running"
-                    />
-                    <NavItem
-                        to="/exercises"
-                        iconClass="fas fa-dumbbell"
-                    />
-                    <NavItem
-                        to="/plans"
-                        iconClass="fas fa-clipboard"
-                    />
-                    <NavItem
-                        to="/recipes"
-                        iconClass="fas fa-utensils"
-                    />
+                    <NavigationPopover />
                     <NavItem
                         to="/cart"
                         iconClass="fas fa-shopping-cart"
                     />
+                    <SavedItemsPopover />
+                    {isAdmin && (
+                        <AdminItemPopover />
+                    )}
                     <NavItem
                         to="/userInfo"
                         iconClass="fas fa-user"
                     />
-                    <SavedItemsPopover targetRef={target} />
-                    {isAdmin && (
-                        <AdminItemPopover />
-                    )}
                 </ul>
             </nav>
-            <FindActivityModal show={isActivityModalOpen} handleClose={closeActivityModal} />
+            <FindModal show={isActivityModalOpen} handleClose={closeActivityModal} />
         </header>
     );
 };
